@@ -1,10 +1,12 @@
-import './App.css';
-import Main from "./Main";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+import Main from "./Main/Main";
 
 function App() {
   return (
     <div className="App">
-      <Main/>
+      <Main />
     </div>
   );
 }
