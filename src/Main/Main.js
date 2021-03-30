@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 
 function Main() {
+  const [searchText, setSearchText] = useState("");
+  const onSearchTextChange = (e) => {
+    setSearchText(e.target.value);
+  };
   return (
     <div>
-      <SearchBar />
+      <SearchBar
+        searchText={searchText}
+        onSearchTextChange={onSearchTextChange}
+      />
     </div>
   );
 }

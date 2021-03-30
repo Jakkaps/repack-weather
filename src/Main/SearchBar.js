@@ -2,7 +2,7 @@ import React from "react";
 import { Form, FormControl, Navbar, InputGroup } from "react-bootstrap";
 import { AiOutlineSearch } from "react-icons/ai";
 
-function SearchBar({ searchTextChange, searchText }) {
+function SearchBar({ onSearchTextChange, searchText }) {
   return (
     <Navbar className={"bg-light justify-content-between"}>
       <Navbar.Brand>RePack Weather</Navbar.Brand>
@@ -16,7 +16,7 @@ function SearchBar({ searchTextChange, searchText }) {
           <FormControl
             placeholder={"Search for location..."}
             value={searchText}
-            onChange={searchTextChange}
+            onChange={onSearchTextChange}
           />
         </InputGroup>
       </Form>
