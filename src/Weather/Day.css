@@ -1,8 +1,11 @@
 .day-container {
     padding: 16px;
-    margin-bottom: 64px;
 }
+
 .info-container {
+    border: 2px solid rgba(0, 0, 0, .2);
+    border-radius: 8px;
+    padding: 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -10,9 +13,9 @@
 
 .date-title {
     width: 100%;
+    font-weight: bold;
     text-align: left;
     opacity: 0.6;
-    margin-bottom: 16px;
 }
 
 .wind-container {

@@ -35,7 +35,7 @@ function Location({ woid, locationType }) {
   });
 
   return (
-    <div>
+    <div className={"location-container"}>
       <div className={"location-title-container"}>
         {locationTypeIcon(locationType)}
         <h1 className={"location-title"}>{title}</h1>

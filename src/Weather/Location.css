@@ -1,3 +1,6 @@
+.location-container {
+    padding: 16px;
+}
 .location-title-container {
     display: flex;
     padding-left: 16px;
