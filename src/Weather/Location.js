@@ -27,6 +27,7 @@ function Location({ woeid, locationType, degreeUnit }) {
         maxTemp={day.maxTemp}
         minTemp={day.minTemp}
         wind={day.wind}
+        degreeUnit={degreeUnit}
       />
     );
   });

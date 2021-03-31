@@ -1,8 +1,6 @@
-import { CELSIUS, toFahrenheit } from "./Temperature";
-
 const storage = window.localStorage;
 
-export function locationFromWoeid(woeid, degreeUnit) {
+export function locationFromWoeid(woeid) {
   return fetch("http://localhost:5050/location/?woeid=" + woeid)
     .then((result) => {
       return result.json();
@@ -17,16 +15,11 @@ export function locationFromWoeid(woeid, degreeUnit) {
         todayIndex + 5
       );
       days = days.map((day) => {
-        const minTemp =
-          degreeUnit === CELSIUS ? day.min_temp : toFahrenheit(day.min_temp);
-        const maxTemp =
-          degreeUnit === CELSIUS ? day.max_temp : toFahrenheit(day.max_temp);
-
         return {
           state: day.weather_state_name,
           date: day.applicable_date,
-          maxTemp: Math.round(maxTemp * 10) / 10,
-          minTemp: Math.round(minTemp * 10) / 10,
+          maxTemp: Math.round(day.max_temp * 10) / 10,
+          minTemp: Math.round(day.min_temp * 10) / 10,
           wind: Math.round(day.wind_speed * 10) / 10,
         };
       });

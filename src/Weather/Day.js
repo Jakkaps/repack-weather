@@ -2,8 +2,14 @@ import React from "react";
 import "./Day.css";
 import WeatherIcon from "./WeatherIcon";
 import { BiWind } from "react-icons/all";
+import { FAHRENHEIT, toFahrenheit } from "../Shared/Temperature";
 
-function Day({ date, description, maxTemp, minTemp, wind }) {
+function Day({ date, description, maxTemp, minTemp, wind, degreeUnit }) {
+  if (degreeUnit === FAHRENHEIT) {
+    maxTemp = toFahrenheit(maxTemp);
+    minTemp = toFahrenheit(minTemp);
+  }
+
   return (
     <div className={"day-container"}>
       <h5 className={"date-title"}>{displayDate(date)}</h5>

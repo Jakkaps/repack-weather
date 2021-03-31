@@ -26,7 +26,7 @@ function Main() {
         selectLocation(location);
       }
     });
-  }, [degreeUnit]);
+  }, []);
 
   const toggleDegreeUnit = () => {
     const newUnit = degreeUnit === CELSIUS ? FAHRENHEIT : CELSIUS;
