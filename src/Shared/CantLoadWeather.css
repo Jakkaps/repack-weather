@@ -1,0 +1,22 @@
+.cant-load-weather-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 64px;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-message {
+    margin-bottom: 64px;
+    width: 50%;
+}
+
+.genie-image {
+    max-height: 400px;
+}
+
+.genie-quote {
+    margin-top: 16px;
+    font-style: italic;
+    max-width: 50%;
+}

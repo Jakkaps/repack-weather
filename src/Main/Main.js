@@ -13,6 +13,7 @@ import {
 import { Spinner } from "react-bootstrap";
 import { getSavedLocation, setSavedLocation } from "../Shared/LocationData";
 import NoResults from "./NoResults";
+import CantLoadWeather from "../Shared/CantLoadWeather";
 
 function Main() {
   const [searchText, setSearchText] = useState("");
@@ -20,13 +21,18 @@ function Main() {
   const [degreeUnit, setLocalDegreeUnit] = useState(getDegreeUnit());
   const [selectedLocation, setSelectedLocation] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    getSavedLocation().then((location) => {
-      if (!selectedLocation) {
-        selectLocation(location);
-      }
-    });
+    getSavedLocation()
+      .then((location) => {
+        if (!selectedLocation) {
+          selectLocation(location);
+        }
+      })
+      .catch(() => {
+        setError(true);
+      });
   }, []);
 
   const toggleDegreeUnit = () => {
@@ -36,6 +42,7 @@ function Main() {
   };
 
   const selectLocation = (location) => {
+    setError(false);
     setSavedLocation(location);
     setSelectedLocation(location);
     setLoading(false);
@@ -44,18 +51,25 @@ function Main() {
   useEffect(() => {
     if (searchText !== "") {
       setLoading(true);
-      searchLocation(searchText).then((data) => {
-        setLoading(false);
-        setSearchResults(data);
-        if (data.length === 1) {
-          selectLocation(data[0]);
-        }
-      });
+      setError(false);
+      searchLocation(searchText)
+        .then((data) => {
+          setLoading(false);
+          setSearchResults(data);
+          if (data.length === 1) {
+            selectLocation(data[0]);
+          }
+        })
+        .catch(() => {
+          setError(true);
+        });
     }
   }, [searchText]);
 
   let content;
-  if (loading) {
+  if (error) {
+    content = <CantLoadWeather />;
+  } else if (loading) {
     content = <CenteredSpinner />;
   } else if (selectedLocation) {
     content = (
@@ -76,7 +90,6 @@ function Main() {
       />
     );
   } else if (searchResults.length === 0) {
-    console.log(selectedLocation);
     content = <NoResults query={searchText} />;
   }
 

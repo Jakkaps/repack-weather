@@ -4,19 +4,30 @@ import Day from "./Day";
 import { locationFromWoeid } from "../Shared/LocationData";
 import { locationTypeIcon } from "../Shared/Icons";
 import { CenteredSpinner } from "../Main/Main";
+import CantLoadWeather from "../Shared/CantLoadWeather";
 
 function Location({ woeid, locationType, degreeUnit }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    locationFromWoeid(woeid, degreeUnit).then((data) => {
-      setTitle(data.title);
-      setDays(data.days);
-      setLoading(false);
-    });
+    locationFromWoeid(woeid, degreeUnit)
+      .then((data) => {
+        setTitle(data.title);
+        setDays(data.days);
+        setLoading(false);
+        setError(false);
+      })
+      .catch((e) => {
+        console.error(e);
+        setError(true);
+      });
   }, [woeid, degreeUnit]);
+  if (error) {
+    return <CantLoadWeather title={title} />;
+  }
 
   const dayDisplays = days.map((day) => {
     return (

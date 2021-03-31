@@ -10,10 +10,12 @@ export function locationFromWoeid(woeid) {
         (day) =>
           new Date(day.applicable_date).getTime() === new Date().getTime()
       );
-      let days = data.consolidated_weather.slice(
-        todayIndex + 2,
-        todayIndex + 5
-      );
+      let days;
+      if (data.consolidated_weather.length > todayIndex + 5) {
+        days = data.consolidated_weather.slice(todayIndex + 2, todayIndex + 5);
+      } else {
+        days = data.consolidated_weather.slice(todayIndex + 2);
+      }
       days = days.map((day) => {
         return {
           state: day.weather_state_name,
