@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import mockWeather from "./location_mock.js";
+import "./Location.css";
 import Day from "./Day";
+import { BiWorld, FaCity, FaFlag, RiGovernmentFill } from "react-icons/all";
 
-function Location({ woid }) {
+function Location({ woid, locationType }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
 
@@ -34,10 +36,31 @@ function Location({ woid }) {
 
   return (
     <div>
-      <h1>{title}</h1>
+      <div className={"location-title-container"}>
+        {locationTypeIcon(locationType)}
+        <h1 className={"location-title"}>{title}</h1>
+      </div>
       {dayDisplays}
     </div>
   );
 }
+
+const locationTypeIcon = (locationType) => {
+  const size = 50;
+  switch (locationType) {
+    case "City":
+      return <FaCity size={size} />;
+    case "Region":
+    case "State":
+    case "Province":
+      return <RiGovernmentFill />;
+    case "Country":
+      return <FaFlag />;
+    case "Continent":
+      return <BiWorld />;
+    default:
+      return null;
+  }
+};
 
 export default Location;

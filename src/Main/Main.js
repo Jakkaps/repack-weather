@@ -37,7 +37,7 @@ function Main() {
         searchText={searchText}
         onSearchTextChange={(e) => setSearchText(e.target.value)}
       />
-      <Location />
+      <Location title={"London"} locationType={"City"} />
     </div>
   );
 }
