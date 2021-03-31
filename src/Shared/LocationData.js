@@ -14,7 +14,10 @@ export function locationFromWoeid(woeid, degreeUnit, testing = false) {
   }
 
   return promise.then((data) => {
-    let days = data.consolidated_weather.slice(0, -3);
+    const todayIndex = data.consolidated_weather.findIndex(
+      (day) => new Date(day.applicable_date).getTime() === new Date().getTime()
+    );
+    let days = data.consolidated_weather.slice(todayIndex + 2, todayIndex + 5);
     days = days.map((day) => {
       const minTemp =
         degreeUnit === CELSIUS ? day.min_temp : toFahrenheit(day.min_temp);

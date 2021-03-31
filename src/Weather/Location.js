@@ -3,15 +3,18 @@ import "./Location.css";
 import Day from "./Day";
 import { locationFromWoeid } from "../Shared/LocationData";
 import { locationTypeIcon } from "../Shared/Icons";
+import { CenteredSpinner } from "../Main/Main";
 
 function Location({ woeid, locationType, degreeUnit }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    locationFromWoeid(woeid, true, degreeUnit).then((data) => {
+    locationFromWoeid(woeid, degreeUnit).then((data) => {
       setTitle(data.title);
       setDays(data.days);
+      setLoading(false);
     });
   }, [woeid, degreeUnit]);
 
@@ -28,7 +31,7 @@ function Location({ woeid, locationType, degreeUnit }) {
     );
   });
 
-  return (
+  return !loading ? (
     <div className={"location-container"}>
       <div className={"location-title-container"}>
         {locationTypeIcon(locationType, 50)}
@@ -36,6 +39,8 @@ function Location({ woeid, locationType, degreeUnit }) {
       </div>
       {dayDisplays}
     </div>
+  ) : (
+    <CenteredSpinner />
   );
 }
 

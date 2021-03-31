@@ -35,7 +35,7 @@ function Main() {
   useEffect(() => {
     if (searchText !== "") {
       setLoading(true);
-      searchLocation(searchText, true, oneResult).then((data) => {
+      searchLocation(searchText).then((data) => {
         setLoading(false);
         setSearchResults(data);
       });
@@ -44,11 +44,7 @@ function Main() {
 
   let content;
   if (loading) {
-    content = (
-      <div className={"spinner-container"}>
-        <Spinner animation={"border"} variant={"primary"} />;
-      </div>
-    );
+    content = <CenteredSpinner />;
   } else if (searchResults.length === 1) {
     content = (
       <Location
@@ -78,6 +74,14 @@ function Main() {
         onDegreeUnitChange={toggleDegreeUnit}
       />
       {content}
+    </div>
+  );
+}
+
+export function CenteredSpinner() {
+  return (
+    <div className={"spinner-container"}>
+      <Spinner animation={"border"} variant={"primary"} />
     </div>
   );
 }
