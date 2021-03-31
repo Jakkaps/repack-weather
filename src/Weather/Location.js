@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from "react";
-import mockWeather from "./location_mock.js";
+import mockWeather from "../Data/location_mock.js";
 import "./Location.css";
 import Day from "./Day";
 import { BiWorld, FaCity, FaFlag, RiGovernmentFill } from "react-icons/all";
+import locationFromWoid from "../Data/Location";
 
 function Location({ woid, locationType }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
 
   useEffect(() => {
-    // fetch(
-    //   "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/" +
-    //     woid
-    // )
-    //   .then(result => result.json()).then(data => {
-    // });
-    new Promise((resolve) => resolve(mockWeather)).then((data) => {
+    locationFromWoid(woid, true).then((data) => {
       setTitle(data.title);
-      setDays(data.consolidated_weather.slice(0, -3));
+      setDays(data.days);
     });
   }, [woid]);
 
   const dayDisplays = days.map((day) => {
     return (
       <Day
-        date={day.applicable_date}
-        description={day.weather_state_name}
-        maxTemp={15}
-        minTemp={7}
-        wind={4}
+        date={day.date}
+        description={day.state}
+        maxTemp={day.maxTemp}
+        minTemp={day.minTemp}
+        wind={day.wind}
         tempUnit={"C°"}
       />
     );
