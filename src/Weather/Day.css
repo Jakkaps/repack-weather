@@ -1,0 +1,31 @@
+.day-container {
+    padding: 16px;
+    margin-bottom: 64px;
+}
+.info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-title {
+    width: 100%;
+    text-align: left;
+    opacity: 0.6;
+    margin-bottom: 16px;
+}
+
+.wind-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.wind-text {
+    margin-right: 8px;
+}
+
+.weather-icon{
+    height: 50px;
+    width: 50px;
+}

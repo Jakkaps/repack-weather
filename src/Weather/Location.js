@@ -20,7 +20,16 @@ function Location({ woid }) {
   }, [woid]);
 
   const dayDisplays = days.map((day) => {
-    return <Day date={day.applicable_date} />;
+    return (
+      <Day
+        date={day.applicable_date}
+        description={day.weather_state_name}
+        maxTemp={15}
+        minTemp={7}
+        wind={4}
+        tempUnit={"C°"}
+      />
+    );
   });
 
   return (
