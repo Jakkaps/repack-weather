@@ -11,18 +11,20 @@ import {
   setDegreeUnit,
 } from "../Shared/Temperature";
 import { Spinner } from "react-bootstrap";
-import { getSavedLocation } from "../Shared/LocationData";
+import { getSavedLocation, setSavedLocation } from "../Shared/LocationData";
 
 function Main() {
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [degreeUnit, setLocalDegreeUnit] = useState(getDegreeUnit());
+  const [selectedLocation, setSelectedLocation] = useState();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getSavedLocation(degreeUnit).then((location) => {
-      setSearchResults([location]);
-      setLoading(false);
+    getSavedLocation().then((location) => {
+      if (!selectedLocation) {
+        selectLocation(location);
+      }
     });
   }, [degreeUnit]);
 
@@ -32,12 +34,21 @@ function Main() {
     setDegreeUnit(newUnit);
   };
 
+  const selectLocation = (location) => {
+    setSavedLocation(location);
+    setSelectedLocation(location);
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (searchText !== "") {
       setLoading(true);
       searchLocation(searchText).then((data) => {
         setLoading(false);
         setSearchResults(data);
+        if (data.length === 1) {
+          selectLocation(data[0]);
+        }
       });
     }
   }, [searchText]);
@@ -45,21 +56,21 @@ function Main() {
   let content;
   if (loading) {
     content = <CenteredSpinner />;
-  } else if (searchResults.length === 1) {
+  } else if (selectedLocation) {
     content = (
       <Location
-        woeid={searchResults[0].woeid}
-        title={searchResults[0].title}
+        woeid={selectedLocation.woeid}
+        title={selectedLocation.title}
         degreeUnit={degreeUnit}
       />
     );
-  } else if (searchResults.length > 1) {
+  } else {
     content = (
       <SearchResults
         results={searchResults}
         onResultClicked={(woeid) => {
           const result = searchResults.find((result) => result.woeid === woeid);
-          setSearchResults([result]);
+          selectLocation(result);
         }}
       />
     );
@@ -69,7 +80,10 @@ function Main() {
     <div>
       <SearchBar
         searchText={searchText}
-        onSearchTextChange={(e) => setSearchText(e.target.value)}
+        onSearchTextChange={(e) => {
+          setSelectedLocation(null);
+          setSearchText(e.target.value);
+        }}
         degreeUnit={degreeUnit}
         onDegreeUnitChange={toggleDegreeUnit}
       />

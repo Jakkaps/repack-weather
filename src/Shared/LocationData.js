@@ -1,64 +1,74 @@
-import mockWeather from "./location_mock";
 import { CELSIUS, toFahrenheit } from "./Temperature";
 
-export function locationFromWoeid(woeid, degreeUnit, testing = false) {
-  let promise;
-  if (!testing) {
-    promise = fetch("http://localhost:5050/location/?woeid=" + woeid).then(
-      (result) => {
-        return result.json();
-      }
-    );
-  } else {
-    promise = new Promise((resolve) => resolve(mockWeather));
-  }
+const storage = window.localStorage;
 
-  return promise.then((data) => {
-    const todayIndex = data.consolidated_weather.findIndex(
-      (day) => new Date(day.applicable_date).getTime() === new Date().getTime()
-    );
-    let days = data.consolidated_weather.slice(todayIndex + 2, todayIndex + 5);
-    days = days.map((day) => {
-      const minTemp =
-        degreeUnit === CELSIUS ? day.min_temp : toFahrenheit(day.min_temp);
-      const maxTemp =
-        degreeUnit === CELSIUS ? day.max_temp : toFahrenheit(day.max_temp);
+export function locationFromWoeid(woeid, degreeUnit) {
+  return fetch("http://localhost:5050/location/?woeid=" + woeid)
+    .then((result) => {
+      return result.json();
+    })
+    .then((data) => {
+      const todayIndex = data.consolidated_weather.findIndex(
+        (day) =>
+          new Date(day.applicable_date).getTime() === new Date().getTime()
+      );
+      let days = data.consolidated_weather.slice(
+        todayIndex + 2,
+        todayIndex + 5
+      );
+      days = days.map((day) => {
+        const minTemp =
+          degreeUnit === CELSIUS ? day.min_temp : toFahrenheit(day.min_temp);
+        const maxTemp =
+          degreeUnit === CELSIUS ? day.max_temp : toFahrenheit(day.max_temp);
 
-      return {
-        state: day.weather_state_name,
-        date: day.applicable_date,
-        maxTemp: Math.round(maxTemp * 10) / 10,
-        minTemp: Math.round(minTemp * 10) / 10,
-        wind: Math.round(day.wind_speed * 10) / 10,
-      };
+        return {
+          state: day.weather_state_name,
+          date: day.applicable_date,
+          maxTemp: Math.round(maxTemp * 10) / 10,
+          minTemp: Math.round(minTemp * 10) / 10,
+          wind: Math.round(day.wind_speed * 10) / 10,
+        };
+      });
+      return { title: data.title, days };
     });
-    return { title: data.title, days };
-  });
 }
 
-export async function getSavedLocation(degreeUnit, testing = false) {
+export function setSavedLocation(location) {
+  storage.setItem("woeid", location.woeid);
+  storage.setItem("title", location.title);
+}
+
+export function getSavedLocation() {
   return new Promise((resolve) => {
-    let woeid = window.localStorage.getItem("savedLocation");
+    let woeid = storage.getItem("woeid");
+    let title = storage.getItem("title");
 
-    if (!woeid && navigator.geolocation) {
+    if ((!woeid || !title) && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        if (testing) {
-          woeid = 44418;
-        }
-
         fetch(
-          "http://localhost:5050/location/search/?lattlong=" +
+          "http://localhost:5050/coords/?lattlong=" +
             position.coords.latitude +
             "," +
             position.coords.longitude
-        );
-
-        window.localStorage.setItem("savedLocation", woeid.toString());
-        resolve(locationFromWoeid(woeid, degreeUnit, testing));
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            woeid = data[0].woeid;
+            title = data[0].title;
+            storage.setItem("woeid", woeid.toString());
+            storage.setItem("title", title);
+            resolve({
+              woeid,
+              title,
+            });
+          });
       });
     } else if (woeid) {
-      woeid = parseInt(woeid);
-      resolve(locationFromWoeid(woeid, degreeUnit, testing));
+      resolve({
+        woeid: parseInt(woeid),
+        title: title,
+      });
     }
   });
 }
