@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Location.css";
 import Day from "./Day";
-import weatherFromWoeid from "../Shared/LocationData";
+import { locationFromWoeid } from "../Shared/LocationData";
 import { locationTypeIcon } from "../Shared/Icons";
 
 function Location({ woeid, locationType, degreeUnit }) {
@@ -9,7 +9,7 @@ function Location({ woeid, locationType, degreeUnit }) {
   const [days, setDays] = useState([]);
 
   useEffect(() => {
-    weatherFromWoeid(woeid, true, degreeUnit).then((data) => {
+    locationFromWoeid(woeid, true, degreeUnit).then((data) => {
       setTitle(data.title);
       setDays(data.days);
     });

@@ -10,20 +10,21 @@ import {
   getDegreeUnit,
   setDegreeUnit,
 } from "../Shared/Temperature";
-import { getPosition } from "../Shared/Location";
 import { Spinner } from "react-bootstrap";
+import { getSavedLocation } from "../Shared/LocationData";
 
 function Main() {
-  const [searchText, setSearchText] = useState("london");
+  const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [degreeUnit, setLocalDegreeUnit] = useState(getDegreeUnit());
   const [loading, setLoading] = useState(true);
-  let position;
+
   useEffect(() => {
-    getPosition().then((pos) => {
-      position = pos;
+    getSavedLocation(true, degreeUnit).then((location) => {
+      setSearchResults([location]);
+      setLoading(false);
     });
-  }, []);
+  }, [degreeUnit]);
 
   const toggleDegreeUnit = () => {
     const newUnit = degreeUnit === CELSIUS ? FAHRENHEIT : CELSIUS;

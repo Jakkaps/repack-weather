@@ -1,7 +1,7 @@
 import mockWeather from "./location_mock";
 import { CELSIUS, toFahrenheit } from "./Temperature";
 
-function locationFromWoeid(woeid, testing = false, degreeUnit) {
+export function locationFromWoeid(woeid, testing = false, degreeUnit) {
   let promise;
   if (!testing) {
     promise = fetch(
@@ -31,4 +31,23 @@ function locationFromWoeid(woeid, testing = false, degreeUnit) {
   });
 }
 
-export default locationFromWoeid;
+export async function getSavedLocation(testing = false, degreeUnit) {
+  return new Promise((resolve) => {
+    let woeid = window.localStorage.getItem("savedLocation");
+
+    if (!woeid && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        // TODO: woeid from location
+        if (testing) {
+          woeid = 44418;
+        }
+
+        window.localStorage.setItem("savedLocation", woeid.toString());
+        resolve(locationFromWoeid(woeid, testing, degreeUnit));
+      });
+    } else if (woeid) {
+      woeid = parseInt(woeid);
+      resolve(locationFromWoeid(woeid, testing, degreeUnit));
+    }
+  });
+}
