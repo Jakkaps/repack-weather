@@ -1,0 +1,11 @@
+.results-container{
+    padding: 16px;
+}
+
+.result-container {
+    display: flex;
+}
+
+.location-title {
+    margin-left: 16px;
+}

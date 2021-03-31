@@ -3,7 +3,13 @@ import React from "react";
 function WeatherIcon({ description, className }) {
   let content;
   try {
-    content = <img src={emojiSource(description)} className={className} />;
+    content = (
+      <img
+        src={emojiSource(description)}
+        className={className}
+        alt={description}
+      />
+    );
   } catch (e) {
     content = <p>No icon found</p>;
   }

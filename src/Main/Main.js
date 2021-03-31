@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 import Location from "../Weather/Location";
-import searchLocation from "../Data/Search";
+import searchLocation from "../Shared/Search";
+import SearchResults from "./SearchResults";
 
 function Main() {
   const [searchText, setSearchText] = useState("");
@@ -23,9 +24,15 @@ function Main() {
   if (searchResults.length === 1) {
     content = <Location title={searchResults[0].title} />;
   } else if (searchResults.length > 1) {
-    content = searchResults.map((location) => (
-      <div id={location.title}>{location.title}</div>
-    ));
+    content = (
+      <SearchResults
+        results={searchResults}
+        onResultClicked={(woeid) => {
+          const result = searchResults.find((result) => result.woeid === woeid);
+          setSearchResults([result]);
+        }}
+      />
+    );
   }
 
   return (

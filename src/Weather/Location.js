@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import mockWeather from "../Data/location_mock.js";
 import "./Location.css";
 import Day from "./Day";
-import { BiWorld, FaCity, FaFlag, RiGovernmentFill } from "react-icons/all";
-import locationFromWoid from "../Data/Location";
+import locationFromWoeid from "../Shared/LocationData";
+import { locationTypeIcon } from "../Shared/Icons";
 
-function Location({ woid, locationType }) {
+function Location({ woeid, locationType }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
 
   useEffect(() => {
-    locationFromWoid(woid, true).then((data) => {
+    locationFromWoeid(woeid, true).then((data) => {
       setTitle(data.title);
       setDays(data.days);
     });
-  }, [woid]);
+  }, [woeid]);
 
   const dayDisplays = days.map((day) => {
     return (
       <Day
+        key={day.date}
         date={day.date}
         description={day.state}
         maxTemp={day.maxTemp}
@@ -32,30 +32,12 @@ function Location({ woid, locationType }) {
   return (
     <div className={"location-container"}>
       <div className={"location-title-container"}>
-        {locationTypeIcon(locationType)}
+        {locationTypeIcon(locationType, 50)}
         <h1 className={"location-title"}>{title}</h1>
       </div>
       {dayDisplays}
     </div>
   );
 }
-
-const locationTypeIcon = (locationType) => {
-  const size = 50;
-  switch (locationType) {
-    case "City":
-      return <FaCity size={size} />;
-    case "Region":
-    case "State":
-    case "Province":
-      return <RiGovernmentFill />;
-    case "Country":
-      return <FaFlag />;
-    case "Continent":
-      return <BiWorld />;
-    default:
-      return null;
-  }
-};
 
 export default Location;

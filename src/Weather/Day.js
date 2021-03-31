@@ -33,7 +33,6 @@ const displayDate = (dateString) => {
   currentDate.setHours(0, 0, 0, 0);
   const tomorrow = new Date(currentDate.setDate(currentDate.getDate() + 1));
 
-  console.log(tomorrow + "\n" + date);
   if (date.getTime() === tomorrow.getTime()) {
     return "Tomorrow";
   }

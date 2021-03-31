@@ -1,11 +1,11 @@
 import mockWeather from "./location_mock";
 
-function locationFromWoid(woid, testing = false) {
+function locationFromWoeid(woeid, testing = false) {
   let promise;
   if (!testing) {
     promise = fetch(
       "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/" +
-        woid
+        woeid
     ).then((result) => result.json());
   } else {
     promise = new Promise((resolve) => resolve(mockWeather));
@@ -26,4 +26,4 @@ function locationFromWoid(woid, testing = false) {
   });
 }
 
-export default locationFromWoid;
+export default locationFromWoeid;
