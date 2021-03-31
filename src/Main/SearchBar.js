@@ -13,18 +13,11 @@ function SearchBar({
     <Navbar className={"justify-content-between"}>
       <Navbar.Brand>RePack Weather</Navbar.Brand>
       <Form inline>
-        <InputGroup>
-          <InputGroup.Prepend>
-            <InputGroup.Text>
-              <AiOutlineSearch size={20} opacity={0.6} />
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            placeholder={"Search for location..."}
-            value={searchText}
-            onChange={onSearchTextChange}
-          />
-        </InputGroup>
+        <FormControl
+          placeholder={"Search for location..."}
+          value={searchText}
+          onChange={onSearchTextChange}
+        />
         <DegreeUnitSelector
           degreeUnit={degreeUnit}
           onChange={onDegreeUnitChange}
