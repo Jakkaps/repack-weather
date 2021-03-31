@@ -12,6 +12,7 @@ import {
 } from "../Shared/Temperature";
 import { Spinner } from "react-bootstrap";
 import { getSavedLocation, setSavedLocation } from "../Shared/LocationData";
+import NoResults from "./NoResults";
 
 function Main() {
   const [searchText, setSearchText] = useState("");
@@ -64,7 +65,7 @@ function Main() {
         degreeUnit={degreeUnit}
       />
     );
-  } else {
+  } else if (searchResults.length > 1) {
     content = (
       <SearchResults
         results={searchResults}
@@ -74,6 +75,9 @@ function Main() {
         }}
       />
     );
+  } else if (searchResults.length === 0) {
+    console.log(selectedLocation);
+    content = <NoResults query={searchText} />;
   }
 
   return (
