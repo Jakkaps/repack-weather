@@ -15,12 +15,10 @@ async function searchLocation(query, testing = false, oneResult = false) {
     return new Promise((resolve) => resolve([]));
   }
 
-  console.log("Search went through!");
   let promise;
   if (!testing) {
     promise = fetch(
-      "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/search/?query=" +
-        query
+      "http://localhost:5050/search/?query=" + query
     ).then((response) => response.json());
   } else if (oneResult) {
     promise = new Promise((resolve) => {

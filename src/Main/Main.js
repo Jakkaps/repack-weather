@@ -20,7 +20,7 @@ function Main() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getSavedLocation(true, degreeUnit).then((location) => {
+    getSavedLocation(degreeUnit).then((location) => {
       setSearchResults([location]);
       setLoading(false);
     });
@@ -35,10 +35,6 @@ function Main() {
   useEffect(() => {
     if (searchText !== "") {
       setLoading(true);
-      let oneResult = true;
-      if (searchText.length === 1) {
-        oneResult = false;
-      }
       searchLocation(searchText, true, oneResult).then((data) => {
         setLoading(false);
         setSearchResults(data);
@@ -55,7 +51,11 @@ function Main() {
     );
   } else if (searchResults.length === 1) {
     content = (
-      <Location title={searchResults[0].title} degreeUnit={degreeUnit} />
+      <Location
+        woeid={searchResults[0].woeid}
+        title={searchResults[0].title}
+        degreeUnit={degreeUnit}
+      />
     );
   } else if (searchResults.length > 1) {
     content = (

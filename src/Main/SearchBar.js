@@ -1,6 +1,5 @@
 import React from "react";
-import { Form, FormControl, Navbar, InputGroup } from "react-bootstrap";
-import { AiOutlineSearch } from "react-icons/ai";
+import { Form, FormControl, Navbar } from "react-bootstrap";
 import DegreeUnitSelector from "./DegreeUnitSelector";
 
 function SearchBar({
