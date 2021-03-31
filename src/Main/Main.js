@@ -9,11 +9,19 @@ import {
   getDegreeUnit,
   setDegreeUnit,
 } from "../Shared/Temperature";
+import { getPosition } from "../Shared/Location";
 
 function Main() {
   const [searchText, setSearchText] = useState("london");
   const [searchResults, setSearchResults] = useState([]);
   const [degreeUnit, setLocalDegreeUnit] = useState(getDegreeUnit());
+  let position;
+  useEffect(() => {
+    getPosition().then((pos) => {
+      position = pos;
+    });
+  }, []);
+
   const toggleDegreeUnit = () => {
     const newUnit = degreeUnit === CELSIUS ? FAHRENHEIT : CELSIUS;
     setLocalDegreeUnit(newUnit);
