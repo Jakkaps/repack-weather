@@ -3,10 +3,22 @@ import SearchBar from "./SearchBar";
 import Location from "../Weather/Location";
 import searchLocation from "../Shared/Search";
 import SearchResults from "./SearchResults";
+import {
+  CELSIUS,
+  FAHRENHEIT,
+  getDegreeUnit,
+  setDegreeUnit,
+} from "../Shared/Temperature";
 
 function Main() {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("london");
   const [searchResults, setSearchResults] = useState([]);
+  const [degreeUnit, setLocalDegreeUnit] = useState(getDegreeUnit());
+  const toggleDegreeUnit = () => {
+    const newUnit = degreeUnit === CELSIUS ? FAHRENHEIT : CELSIUS;
+    setLocalDegreeUnit(newUnit);
+    setDegreeUnit(newUnit);
+  };
 
   useEffect(() => {
     if (searchText !== "") {
@@ -22,7 +34,9 @@ function Main() {
 
   let content;
   if (searchResults.length === 1) {
-    content = <Location title={searchResults[0].title} />;
+    content = (
+      <Location title={searchResults[0].title} degreeUnit={degreeUnit} />
+    );
   } else if (searchResults.length > 1) {
     content = (
       <SearchResults
@@ -40,8 +54,9 @@ function Main() {
       <SearchBar
         searchText={searchText}
         onSearchTextChange={(e) => setSearchText(e.target.value)}
+        degreeUnit={degreeUnit}
+        onDegreeUnitChange={toggleDegreeUnit}
       />
-      {/*<Location title={"London"} locationType={"City"} />*/}
       {content}
     </div>
   );

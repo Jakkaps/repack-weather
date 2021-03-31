@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./Location.css";
 import Day from "./Day";
-import locationFromWoeid from "../Shared/LocationData";
+import weatherFromWoeid from "../Shared/LocationData";
 import { locationTypeIcon } from "../Shared/Icons";
 
-function Location({ woeid, locationType }) {
+function Location({ woeid, locationType, degreeUnit }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
 
   useEffect(() => {
-    locationFromWoeid(woeid, true).then((data) => {
+    weatherFromWoeid(woeid, true, degreeUnit).then((data) => {
       setTitle(data.title);
       setDays(data.days);
     });
-  }, [woeid]);
+  }, [woeid, degreeUnit]);
 
   const dayDisplays = days.map((day) => {
     return (
@@ -24,7 +24,6 @@ function Location({ woeid, locationType }) {
         maxTemp={day.maxTemp}
         minTemp={day.minTemp}
         wind={day.wind}
-        tempUnit={"C°"}
       />
     );
   });

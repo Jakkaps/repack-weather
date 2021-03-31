@@ -3,19 +3,15 @@ import "./Day.css";
 import WeatherIcon from "./WeatherIcon";
 import { BiWind } from "react-icons/all";
 
-function Day({ date, description, maxTemp, minTemp, wind, tempUnit }) {
+function Day({ date, description, maxTemp, minTemp, wind }) {
   return (
     <div className={"day-container"}>
       <h5 className={"date-title"}>{displayDate(date)}</h5>
       <div className={"info-container"}>
         <WeatherIcon description={description} className={"weather-icon"} />
         <div>
-          <h4 style={{ color: colorFromTemp(maxTemp) }}>
-            {maxTemp + " " + tempUnit + " max"}
-          </h4>
-          <h4 style={{ color: colorFromTemp(minTemp) }}>
-            {minTemp + " " + tempUnit + " min"}
-          </h4>
+          <h4 style={{ color: colorFromTemp(maxTemp) }}>{maxTemp + "° max"}</h4>
+          <h4 style={{ color: colorFromTemp(minTemp) }}>{minTemp + "° min"}</h4>
         </div>
         <div className={"wind-container"}>
           <h4 className={"wind-text"}>{wind + " m/s"}</h4>

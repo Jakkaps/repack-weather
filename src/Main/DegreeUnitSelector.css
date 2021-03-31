@@ -1,0 +1,15 @@
+.degree-selector-container {
+    padding: 8px;
+    display: flex;
+    margin-left: 16px;
+    align-items: center;
+}
+
+.divider {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.degree-selector-container:hover {
+    cursor: pointer;
+}

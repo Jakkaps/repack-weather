@@ -1,6 +1,7 @@
 import mockWeather from "./location_mock";
+import { CELSIUS, toFahrenheit } from "./Temperature";
 
-function locationFromWoeid(woeid, testing = false) {
+function locationFromWoeid(woeid, testing = false, degreeUnit) {
   let promise;
   if (!testing) {
     promise = fetch(
@@ -14,11 +15,15 @@ function locationFromWoeid(woeid, testing = false) {
   return promise.then((data) => {
     let days = data.consolidated_weather.slice(0, -3);
     days = days.map((day) => {
+      const minTemp =
+        degreeUnit === CELSIUS ? day.min_temp : toFahrenheit(day.min_temp);
+      const maxTemp =
+        degreeUnit === CELSIUS ? day.max_temp : toFahrenheit(day.max_temp);
       return {
         state: day.weather_state_name,
         date: day.applicable_date,
-        maxTemp: Math.round(day.max_temp * 10) / 10,
-        minTemp: Math.round(day.min_temp * 10) / 10,
+        maxTemp: Math.round(maxTemp * 10) / 10,
+        minTemp: Math.round(minTemp * 10) / 10,
         wind: Math.round(day.wind_speed * 10) / 10,
       };
     });
