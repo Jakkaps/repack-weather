@@ -17,6 +17,7 @@ async function searchLocation(query) {
   globalNonce = localNonce;
   await new Promise((resolve) => setTimeout(resolve, 500));
 
+  // If function has ben called while waiting for the above timout, globalNonce and localNonce are no longer equal.
   if (localNonce !== globalNonce) {
     return new Promise((resolve) => resolve([]));
   }
