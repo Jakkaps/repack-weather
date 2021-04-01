@@ -11,6 +11,14 @@ export function locationFromWoeid(woeid) {
       return result.json();
     })
     .then((data) => {
+      if (
+        !(
+          data.hasOwnProperty("consolidated_weather") &&
+          data.hasOwnProperty("title")
+        )
+      ) {
+        return Promise.reject("Invalid data received");
+      }
       // Get the index of the day matching today. Assumes this value is always present.
       const todayIndex = data.consolidated_weather.findIndex(
         (day) =>

@@ -16,6 +16,18 @@ async function searchLocation(query) {
   return fetch("http://localhost:5050/search/?query=" + query)
     .then((response) => response.json())
     .then((data) => {
+      if (
+        !Array.isArray(data) ||
+        (data.length !== 0 &&
+          !(
+            data[0].hasOwnProperty("title") &&
+            data[0].hasOwnProperty("woeid") &&
+            data[0].hasOwnProperty("location_type")
+          ))
+      ) {
+        return Promise.reject("Invalid data received");
+      }
+
       return data.map((location) => {
         return {
           title: location.title,
