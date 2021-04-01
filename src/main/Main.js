@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./Main.css";
 
 import SearchBar from "../navbar/SearchBar";
 import Location from "../location/Location";
@@ -9,7 +8,7 @@ import NoResults from "../errors/NoResults";
 import CantLoadWeather from "../errors/CantLoadWeather";
 import CenteredSpinner from "../common/CenteredSpinner";
 
-import { CELSIUS, FAHRENHEIT } from "../common/Temperature";
+import { CELSIUS, FAHRENHEIT } from "../common/TemperatureUtil";
 import {
   getSavedLocation,
   setSavedLocation,
@@ -25,30 +24,25 @@ function Main() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  const selectLocation = (location) => {
+    // Only set if it var previously cleared (cleared in search).
+    if (!selectedLocation) {
+      setError(false);
+      setSavedLocation(location);
+      setSelectedLocation(location);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getSavedLocation()
       .then((location) => {
-        if (!selectedLocation) {
-          selectLocation(location);
-        }
+        selectLocation(location);
       })
       .catch(() => {
         setError(true);
       });
   }, []);
-
-  const toggleDegreeUnit = () => {
-    const newUnit = degreeUnit === CELSIUS ? FAHRENHEIT : CELSIUS;
-    setLocalDegreeUnit(newUnit);
-    setDegreeUnit(newUnit);
-  };
-
-  const selectLocation = (location) => {
-    setError(false);
-    setSavedLocation(location);
-    setSelectedLocation(location);
-    setLoading(false);
-  };
 
   useEffect(() => {
     if (searchText !== "") {
@@ -68,6 +62,12 @@ function Main() {
     }
   }, [searchText]);
 
+  const toggleDegreeUnit = () => {
+    const newUnit = degreeUnit === CELSIUS ? FAHRENHEIT : CELSIUS;
+    setLocalDegreeUnit(newUnit);
+    setDegreeUnit(newUnit);
+  };
+
   let content;
   if (error) {
     content = <CantLoadWeather />;
@@ -82,7 +82,6 @@ function Main() {
       />
     );
   } else if (searchResults.length > 1) {
-    console.log(searchResults);
     content = (
       <SearchResults
         results={searchResults}
@@ -101,7 +100,10 @@ function Main() {
       <SearchBar
         searchText={searchText}
         onSearchTextChange={(e) => {
-          setSelectedLocation(null);
+          const newText = e.target.value;
+          if (newText.length > searchText.length) {
+            setSelectedLocation(null);
+          }
           setSearchText(e.target.value);
         }}
         degreeUnit={degreeUnit}

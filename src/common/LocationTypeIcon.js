@@ -2,7 +2,6 @@ import { BiWorld, FaCity, FaFlag, RiGovernmentFill } from "react-icons/all";
 import React from "react";
 
 function LocationTypeIcon({ locationType, size }) {
-  console.log(locationType);
   switch (locationType) {
     case "City":
       return <FaCity size={size} />;

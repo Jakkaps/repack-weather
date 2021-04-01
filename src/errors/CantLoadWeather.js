@@ -23,6 +23,10 @@ function CantLoadWeather() {
   );
 }
 
+/**
+ * Gets one of 'sunny', 'cloudy' or 'rainy' at random
+ * @returns {string} one of the strings
+ */
 const randomWeather = () => {
   return ["sunny", "cloudy", "rainy"][Math.floor(Math.random() * 3)];
 };

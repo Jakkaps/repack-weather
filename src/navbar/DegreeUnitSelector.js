@@ -1,7 +1,7 @@
 import React from "react";
 import { RiCelsiusFill, RiFahrenheitFill } from "react-icons/all";
 import "./DegreeUnitSelector.css";
-import { CELSIUS } from "../common/Temperature";
+import { CELSIUS } from "../common/TemperatureUtil";
 
 function DegreeUnitSelector({ degreeUnit, onChange }) {
   const isCelsius = degreeUnit === CELSIUS;

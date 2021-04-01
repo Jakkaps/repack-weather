@@ -12,21 +12,22 @@ function Location({ woeid, degreeUnit }) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    locationFromWoeid(woeid, degreeUnit)
+    locationFromWoeid(woeid)
       .then((data) => {
         setTitle(data.title);
         setDays(data.days);
         setLoading(false);
         setError(false);
       })
-      .catch((e) => {
-        console.error(e);
+      .catch(() => {
         setError(true);
       });
-  }, [woeid, degreeUnit]);
+  }, [woeid]);
 
   if (error) {
     return <CantLoadWeather title={title} />;
+  } else if (loading) {
+    return <CenteredSpinner />;
   }
 
   const dayDisplays = days.map((day) => {
@@ -43,15 +44,13 @@ function Location({ woeid, degreeUnit }) {
     );
   });
 
-  return !loading ? (
+  return (
     <div className={"location-container"}>
       <div className={"location-title-container"}>
         <h1 className={"location-title"}>{title}</h1>
       </div>
       {dayDisplays}
     </div>
-  ) : (
-    <CenteredSpinner />
   );
 }
 

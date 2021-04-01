@@ -1,4 +1,4 @@
-import { CELSIUS } from "../common/Temperature";
+import { CELSIUS } from "../common/TemperatureUtil";
 
 const storage = window.localStorage;
 
@@ -22,6 +22,10 @@ export function setSavedLocation(location) {
   storage.setItem("title", location.title);
 }
 
+/**
+ * Returns the saved location. If no location is saved, try to use the one that is closest.
+ * @returns {Promise<unknown>}
+ */
 export function getSavedLocation() {
   return new Promise((resolve) => {
     let woeid = storage.getItem("woeid");

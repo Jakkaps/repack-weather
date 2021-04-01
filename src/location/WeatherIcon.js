@@ -50,7 +50,7 @@ const emojiSource = (description) => {
       src += "c";
       break;
     default:
-      throw TypeError("No icon matching that description");
+      return "";
   }
   src += ".svg";
   return src;
