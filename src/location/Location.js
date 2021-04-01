@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./Location.css";
 import Day from "./Day";
-import { locationFromWoeid } from "../Shared/LocationData";
-import { locationTypeIcon } from "../Shared/Icons";
-import { CenteredSpinner } from "../Main/Main";
-import CantLoadWeather from "../Shared/CantLoadWeather";
+import { locationFromWoeid } from "./LocationAPI";
+import CenteredSpinner from "../common/CenteredSpinner";
+import CantLoadWeather from "../errors/CantLoadWeather";
 
-function Location({ woeid, locationType, degreeUnit }) {
+function Location({ woeid, degreeUnit }) {
   const [title, setTitle] = useState("");
   const [days, setDays] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,6 +24,7 @@ function Location({ woeid, locationType, degreeUnit }) {
         setError(true);
       });
   }, [woeid, degreeUnit]);
+
   if (error) {
     return <CantLoadWeather title={title} />;
   }
@@ -46,7 +46,6 @@ function Location({ woeid, locationType, degreeUnit }) {
   return !loading ? (
     <div className={"location-container"}>
       <div className={"location-title-container"}>
-        {locationTypeIcon(locationType, 50)}
         <h1 className={"location-title"}>{title}</h1>
       </div>
       {dayDisplays}

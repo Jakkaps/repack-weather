@@ -19,7 +19,7 @@ async function searchLocation(query) {
       return data.map((location) => {
         return {
           title: location.title,
-          type: location.location_type,
+          locationType: location.location_type,
           woeid: location.woeid,
         };
       });

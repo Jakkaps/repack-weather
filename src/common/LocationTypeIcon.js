@@ -1,19 +1,22 @@
 import { BiWorld, FaCity, FaFlag, RiGovernmentFill } from "react-icons/all";
 import React from "react";
 
-export function locationTypeIcon(locationType, size) {
+function LocationTypeIcon({ locationType, size }) {
+  console.log(locationType);
   switch (locationType) {
     case "City":
       return <FaCity size={size} />;
     case "Region":
     case "State":
     case "Province":
-      return <RiGovernmentFill />;
+      return <RiGovernmentFill size={size} />;
     case "Country":
-      return <FaFlag />;
+      return <FaFlag size={size} />;
     case "Continent":
-      return <BiWorld />;
+      return <BiWorld size={size} />;
     default:
       return null;
   }
 }
+
+export default LocationTypeIcon;

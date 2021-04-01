@@ -2,7 +2,7 @@ import React from "react";
 import "./Day.css";
 import WeatherIcon from "./WeatherIcon";
 import { BiWind } from "react-icons/all";
-import { FAHRENHEIT, toFahrenheit } from "../Shared/Temperature";
+import { FAHRENHEIT, toFahrenheit } from "../common/Temperature";
 
 function Day({ date, description, maxTemp, minTemp, wind, degreeUnit }) {
   if (degreeUnit === FAHRENHEIT) {

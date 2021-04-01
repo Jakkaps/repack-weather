@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import SearchBar from "./SearchBar";
-import Location from "../Weather/Location";
-import searchLocation from "../Shared/Search";
-import SearchResults from "./SearchResults";
 import "./Main.css";
+
+import SearchBar from "../navbar/SearchBar";
+import Location from "../location/Location";
+import searchLocation from "./SearchAPI";
+import SearchResults from "./SearchResults";
+import NoResults from "../errors/NoResults";
+import CantLoadWeather from "../errors/CantLoadWeather";
+import CenteredSpinner from "../common/CenteredSpinner";
+
+import { CELSIUS, FAHRENHEIT } from "../common/Temperature";
 import {
-  CELSIUS,
-  FAHRENHEIT,
+  getSavedLocation,
+  setSavedLocation,
   getDegreeUnit,
   setDegreeUnit,
-} from "../Shared/Temperature";
-import { Spinner } from "react-bootstrap";
-import { getSavedLocation, setSavedLocation } from "../Shared/LocationData";
-import NoResults from "./NoResults";
-import CantLoadWeather from "../Shared/CantLoadWeather";
+} from "./LocalStorage";
 
 function Main() {
   const [searchText, setSearchText] = useState("");
@@ -80,6 +82,7 @@ function Main() {
       />
     );
   } else if (searchResults.length > 1) {
+    console.log(searchResults);
     content = (
       <SearchResults
         results={searchResults}
@@ -105,14 +108,6 @@ function Main() {
         onDegreeUnitChange={toggleDegreeUnit}
       />
       {content}
-    </div>
-  );
-}
-
-export function CenteredSpinner() {
-  return (
-    <div className={"spinner-container"}>
-      <Spinner animation={"border"} variant={"primary"} />
     </div>
   );
 }
