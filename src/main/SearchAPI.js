@@ -5,6 +5,14 @@
  */
 let globalNonce;
 async function searchLocation(query) {
+  // Empty or only spaces, return empty array
+  if (!query.replace(/\s/g, "").length) {
+    console.log("Only spaces");
+    return new Promise((resolve) => {
+      resolve([]);
+    });
+  }
+
   const localNonce = {};
   globalNonce = localNonce;
   await new Promise((resolve) => setTimeout(resolve, 500));
