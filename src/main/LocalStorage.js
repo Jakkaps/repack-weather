@@ -27,30 +27,38 @@ export function setSavedLocation(location) {
  * @returns {Promise<unknown>}
  */
 export function getSavedLocation() {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     let woeid = storage.getItem("woeid");
     let title = storage.getItem("title");
 
     if ((!woeid || !title) && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        fetch(
-          "http://localhost:5050/coords/?lattlong=" +
-            position.coords.latitude +
-            "," +
-            position.coords.longitude
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            woeid = data[0].woeid;
-            title = data[0].title;
-            storage.setItem("woeid", woeid.toString());
-            storage.setItem("title", title);
-            resolve({
-              woeid,
-              title,
+      console.log("trying to get location");
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetch(
+            "http://localhost:5050/coords/?lattlong=" +
+              position.coords.latitude +
+              "," +
+              position.coords.longitude
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              woeid = data[0].woeid;
+              title = data[0].title;
+              storage.setItem("woeid", woeid.toString());
+              storage.setItem("title", title);
+              resolve({
+                woeid,
+                title,
+              });
             });
-          });
-      });
+        },
+        () => {
+          reject(
+            "Could not load. Probably because the user did not allow you to use location."
+          );
+        }
+      );
     } else if (woeid) {
       resolve({
         woeid: parseInt(woeid),

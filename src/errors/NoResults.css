@@ -1,4 +1,4 @@
-.no-results-container {
+.default-error-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-.no-match-label {
+.default-error-label {
     width: 50%;
     margin-bottom: 32px;
 }

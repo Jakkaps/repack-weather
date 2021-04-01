@@ -4,7 +4,7 @@ import SearchBar from "../navbar/SearchBar";
 import Location from "../location/Location";
 import searchLocation from "./SearchAPI";
 import SearchResults from "./SearchResults";
-import NoResults from "../errors/NoResults";
+import DefaultError from "../errors/DefaultError";
 import CantLoadWeather from "../errors/CantLoadWeather";
 import CenteredSpinner from "../common/CenteredSpinner";
 
@@ -92,7 +92,13 @@ function Main() {
       />
     );
   } else if (searchResults.length === 0) {
-    content = <NoResults query={searchText} />;
+    content = (
+      <DefaultError
+        text={`No location matching '${searchText}' - did you spell it correctly?`}
+      />
+    );
+  } else {
+    content = <DefaultError text={"No location selected"} />;
   }
 
   return (
